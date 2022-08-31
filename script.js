@@ -1,83 +1,3 @@
-const boton1 = document.querySelector("#boton1")
-class User {
-    constructor(username, talle, email, password) {
-        this.username = username
-        this.talle = talle
-        this.email = email
-        this.password = password
-    }
-}
-
-let users = []
-
-if (localStorage.getItem(`users`)) {
-    users = JSON.parse(localStorage.getItem ('users'))
-} else {
-    localStorage.setItem('users',JSON.stringify (users))
-}
-    
-const idForm = document.getElementById("idForm")
-const botonUsers = document.getElementById("botonUsers")
-const divUsers = document.getElementById("divUsers")
-
-
-
-idForm.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const datForm = new FormData(e.target)
-    /*
-    const username = document.getElementById("username").value
-    const talle = document.getElementById("talle").value
-    const email = document.getElementById("email").value
-    const password = document.getElementById("password").value
-
-    const user = new User(username, talle, email, password)*/
-
-    const user = new User(datForm.get("username"), datForm.get("talle"), datForm.get("email"), datForm.get("password"))
-
-    users.push(user)
-
-    localStorage.setItem('users',JSON.stringify(users))
-
-    idForm.reset()
-    
-})
-
-botonUsers.addEventListener('click', () => {
-    const userStorage = JSON.parse(localStorage.getItem('users'))
-    
-    divUsers.innerHTML = ""
-        
-
-    userStorage.forEach((user, indice) => {
-        divUsers.innerHTML += `
-            <div class="card" id="user${indice}" style="width: 18rem;margin:3px;">
-                <div class="card-body">
-                    <h5 class="card-title">${user.username}</h5>
-                    <p class="card-text">${user.talle}</p>
-                    <p class="card-text">${user.email}</p>
-                    <button class="btn btn-danger">Eliminar</button>
-                </div>
-            </div>
-        
-        `
-    })
-
-    userStorage.forEach((user, indice) => {
-        const cardUser = document.getElementById(`user${indice}`)
-
-        cardUser.children[0].children[3].addEventListener('click', () => {
-            cardUser.remove() //DOM
-            users.splice(indice, 1) //Array
-            localStorage.setItem('users', JSON.stringify(users)) //Local storage
-            console.log(`${user.username} Eliminada`)
-        })
-    })
-})
-
-
-
-
 
 const PRODUCTOS_JAVER = [
     {
@@ -113,7 +33,7 @@ const PRODUCTOS_JAVER = [
         precio: 45000,
         talle: `m`,
         descripcion: ' Traje formal en tejido italiano 100% lana Vitale Barberis Canónico Super 110¨s. Saco de dos botones con solapa fina y un tajo trasero forrado en viscosa. Pantalón recto sin pinzas. Moldería slim fit moderada .',
-        img: 'https://images.unsplash.com/photo-1592878904946-b3cd8ae243d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=581&q=80',
+        img: 'https://images.unsplash.com/photo-1593032465175-481ac7f401a0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80',
         categoria: ' CUADRILLE',
     },
     {
@@ -199,7 +119,7 @@ const productos = PRODUCTOS_JAVER.map(producto => new Producto(
 ));
 
 
-
+const divProductos = document.getElementById("divProductos")
 
 
 
@@ -211,11 +131,56 @@ productos.forEach((producto) => {
                 <p class="card-text">ID:${producto.id}</p>
                 <p class="card-text">Precio:${producto.precio}</p>
                 <p class="card-text">Descripcion:${producto.descripcion}</p>
+                <p class="card-text">Img:${producto.img}</p>
                 <p class="card-text">Categoria:${producto.categoria}</p>
-                <button type="submit" id="agregarCarrito"> "Posible boton sin dinamica para el carrito" </button>
+                <button class="btn btn-dark botonesProducto"> "COMPRAR" </button>
                 </div>
             </div>`
 })
+
+const botonCarrito = document.getElementById("botonCarrito")
+const botonesProducto = document.getElementsByClassName("botonesProducto")
+console.log(botonesProducto)
+
+
+
+
+botonCarrito.addEventListener('click', () => {
+    Swal.fire({
+        title: 'Carrito',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Finalizar Compra',
+        denyButtonText: `Cancelar compra`,
+        cancelButtonText: 'Seguir comprando'
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            Swal.fire('Compra Finalizada', 'En breve te enviaremos el producto', 'success')
+        } else if (result.isDenied) {
+            Swal.fire('Seguro que desea cancelar su compra?', '', 'info')
+        }
+    })
+
+})
+
+
+for (let i = 0; i < botonesProducto.length; i++){
+    botonesProducto[i].addEventListener('click', () => {
+        Toastify({
+
+            text: "Agregado al carrito",
+
+            duration: 3000,
+            style: {
+                background: "linear-gradient(to right,#D3CCE3,#E9E4F0)",
+            },
+
+        }).showToast();
+
+    })
+}
+
 
 
 /*

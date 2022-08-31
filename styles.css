@@ -1,8 +1,21 @@
 .titulo {
     width: 100%;
     color: rgb(63, 35, 63);
+    text-align: center;
+    margin: 2rem;
     align-items: center;
     justify-content: center;
+}
+
+body{
+    background-color: #9a8c98;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;    
+}
+
+.btnCarrito{
+    background-color: rgb(63, 35, 63);
+    color: aliceblue;
+    margin: 4rem;
 }
 
 .card {
@@ -10,4 +23,5 @@
     color: aliceblue;
     width: 18rem;
     margin: 4px;
+    
 }
